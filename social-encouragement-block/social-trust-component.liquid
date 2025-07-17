@@ -1,0 +1,78 @@
+<div class="product-info__inventory" style="background-color: {{ block.settings.background }};" {{
+    block.shopify_attributes }}>
+    <div class="proof-widget">
+        <div class="proof-widget__icons">
+
+            {% if block.settings.image1 != blank %}
+            {%- capture sizes1 -%}
+            (max-width: 999px) 100vw, min({{ block.settings.image1.width | ceil }}px, {{ block.settings.media_width |
+            default: 20 }}vw)
+            {%- endcapture -%}
+            {{ block.settings.image1 | image_url: width: block.settings.image1.width | image_tag:
+            loading: 'lazy',
+            sizes: sizes1,
+            widths: '45,90,135,180,300',
+            class: 'proof-widget__image proof-widget__image--1'
+            }}
+            {% else %}
+            <div class="proof-widget__placeholder proof-widget__image--1">
+                {{ 'image' | placeholder_svg_tag }}
+            </div>
+            {% endif %}
+
+            {% if block.settings.image2 != blank %}
+            {%- capture sizes2 -%}
+            (max-width: 999px) 100vw, min({{ block.settings.image2.width | ceil }}px, {{ block.settings.media_width |
+            default: 20 }}vw)
+            {%- endcapture -%}
+            {{ block.settings.image2 | image_url: width: block.settings.image2.width | image_tag:
+            loading: 'lazy',
+            sizes: sizes2,
+            widths: '45,90,135,180,300',
+            class: 'proof-widget__image proof-widget__image--2'
+            }}
+            {% else %}
+            <div class="proof-widget__placeholder proof-widget__image--2">
+                {{ 'image' | placeholder_svg_tag }}
+            </div>
+            {% endif %}
+
+        </div>
+
+        <div class="proof-widget__text">
+            <p>{{ block.settings.text_trust }}</p>
+        </div>
+    </div>
+</div>
+
+{% comment %}
+{
+"type":"social_trust",
+"name":"Social trust",
+"limit":1,
+"settings":[
+{
+"type":"text",
+"id":"text_trust",
+"label":"Text",
+"default":"Show what customers think about your products."
+},
+{
+"type":"image_picker",
+"id":"image1",
+"label":"Image 1"
+},
+{
+"type":"image_picker",
+"id":"image2",
+"label":"Image 2"
+},
+{
+"type":"color_background",
+"id":"background",
+"label":"Background",
+"default":"#FFFFF"
+}
+]
+}
+{% endcomment %}
