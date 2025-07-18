@@ -1,0 +1,38 @@
+.usp-widget {
+    display: flex;
+    justify-content: center;
+    gap: 1em;
+  }
+  
+  .usp-widget__item {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 0.25em 0.725em;
+    display: flex;
+    width: fit-content;
+    gap: 0.5em;
+    align-items: center;
+    height: auto;
+  }
+  
+  .usp-widget__text {
+    margin: 0;
+    font-size: 12px;
+  }
+  
+  .usp-widget__icon {
+    padding: 0.2em;
+  }
+  
+  @media only screen and (max-width: 798px) {
+    .usp-widget {
+      justify-content: flex-start;
+      flex-wrap: wrap;
+      gap: 1em;
+    }
+  
+    .usp-widget__text {
+      font-size: 11px;
+    }
+  }
+  
