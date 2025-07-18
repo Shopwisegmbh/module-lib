@@ -70,7 +70,7 @@ Example:
 * BEM-style class names: `block__element--modifier`
 * No global IDs
 * CSS is scoped per module
-* JavaScript (if used) should be wrapped in an `init()` function and scoped to the container
+* JavaScript (if used) should be deferred or used as module
 
 ---
 
