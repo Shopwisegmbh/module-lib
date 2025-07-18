@@ -1,0 +1,58 @@
+<div class="expert-widget" {{ block.shopify_attributes }}>
+    <div class="expert-widget__wrapper">
+        {% if block.settings.expert_image != blank %}
+        {%- capture expert_sizes -%}
+        (max-width: 999px) 100vw, min({{ block.settings.expert_image.width | ceil }}px, {{
+        block.settings.expert_image_width | default: 80 }}px)
+        {%- endcapture -%}
+        {{ block.settings.expert_image | image_url: width: block.settings.expert_image.width | image_tag:
+        loading: 'lazy',
+        sizes: expert_sizes,
+        widths: '45,90,135,180,300',
+        class: 'expert-widget__image'
+        }}
+        {% else %}
+        <div class="expert-widget__placeholder">
+            {{ 'image' | placeholder_svg_tag }}
+        </div>
+        {% endif %}
+
+        {% if block.settings.text != blank %}
+        <div class="expert-widget__text" id="ctaAction">
+            {{ block.settings.text }}
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+
+{% comment %}
+{
+"type":"expert_widget",
+"name":"Expert Widget",
+"limit":1,
+"settings":[
+{
+"type":"image_picker",
+"id":"expert_image",
+"label":"Image"
+},
+{
+"type":"range",
+"id":"expert_image_width",
+"min":20,
+"max":80,
+"step":1,
+"unit":"px",
+"label":"Image width",
+"default":50
+},
+{
+"type": "richtext",
+"id": "text",
+"label": "Content",
+"default":"<p>Text</p>"
+}
+]
+}
+{% endcomment %}

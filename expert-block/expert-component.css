@@ -1,0 +1,34 @@
+.expert-widget {
+    background: #E8E6DC;
+    padding: 1em;
+    border-radius: 12px;
+  }
+  
+  .expert-widget__wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .expert-widget__image {
+    height: 50px;
+    width: 50px;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 100%;
+    border: 1.3px solid #D2B48C; /* vorher: #fff */
+  }
+  
+  .expert-widget__placeholder svg {
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    border: 1.3px solid #D2B48C;
+  }
+  
+  .expert-widget__text a {
+    text-decoration: underline;
+  }
+  
+
+  
