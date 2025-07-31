@@ -1,0 +1,153 @@
+{{ 'component-author-block.css' | asset_url | stylesheet_tag }}
+
+<section class="article-template__section--inner article-section__author-box content-hub-content" id="{{ block.id }}" {{
+    block.shopify_attributes }}>
+    {% liquid
+    assign show_divider = true
+    assign show_reading_time = block.settings.show_reading_time
+    assign show_published = block.settings.show_published
+
+    if show_reading_time == false and show_published == false
+    assign show_divider = false
+    endif
+    %}
+
+    <div class="author-box">
+        <div class="author-box__details">
+            <div class="author-box__image-wrapper">
+                {% if block.settings.image != blank %}
+                <picture>
+                    <source srcset="
+                {{ block.settings.image | image_url: width: 320 }} 320w,
+                {{ block.settings.image | image_url: width: 480 }} 480w,
+                {{ block.settings.image | image_url: width: 768 }} 768w,
+                {{ block.settings.image | image_url: width: 1000 }} 1000w
+              " sizes="(max-width: 480px) 70px, (max-width: 768px) 100px, 150px" media="(min-width: 768px)">
+                    <img class="author-box__image" src="{{ block.settings.image | image_url: width: 320 }}" srcset="
+                {{ block.settings.image | image_url: width: 320 }} 320w,
+                {{ block.settings.image | image_url: width: 480 }} 480w,
+                {{ block.settings.image | image_url: width: 768 }} 768w,
+                {{ block.settings.image | image_url: width: 1000 }} 1000w
+              " sizes="(max-width: 480px) 70px, (max-width: 768px) 100px, 150px"
+                        alt="{{ block.settings.image.alt | escape }}" loading="lazy" width="70" height="70">
+                </picture>
+                {% else %}
+                <div class="author-box__image--placeholder">
+                    {{ 'image' | placeholder_svg_tag }}
+                    { </div>
+                {% endif %}
+
+                {% if block.settings.badge %}
+                <img class="author-box__badge" src="{{ block.settings.badge | image_url: width: 40 }}" alt="Badge"
+                    loading="lazy" width="20" height="20">
+                {% endif %}
+            </div>
+
+            <div class="author-box__meta">
+                <div class="author-box__meta-column">
+                    {% if block.settings.content != blank %}
+                    <h3 class="author-box__name">
+                        {% if block.settings.link != blank -%}
+                        <a href="{{ block.settings.link }}" class="author-box__link">
+                            {%- endif -%}
+                            {{- block.settings.title -}}
+                            {%- if block.settings.link != blank %}</a>{% endif %}
+                    </h3>
+                    {% endif %}
+
+                    {% if block.settings.content != blank %}
+                    <div class="author-box__description">
+                        {{ block.settings.content }}
+                    </div>
+                    {% endif %}
+                    {% if show_divider %}
+                    <div class="author-box__divider"></div>
+                    {% endif %}
+                    <div class="author-box__info">
+                        {% if block.settings.show_reading_time %}
+                        <div class="author-box__reading-time">
+                            {{ block.settings.label_reading_time }}
+                            {% if block.settings.show_published %}
+                            <span id="reading-time"></span><i>&#8226;</i>
+                            {%- endif %}
+                        </div>
+                        {% endif %}
+                        {% if block.settings.show_published %}
+                        <span class="author-box__published-date">
+                            {{ block.settings.label_published }}
+                            <a class="author-box__blog-link" href="{{ blog.url }}" aria-label="link">
+                                {{ blog.title }}
+                            </a>
+                        </span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const readingTimeEl = document.getElementById("reading-time");
+        const docHeight = document.body.scrollHeight;
+
+        const pxPerMinute = 1200;
+        const estimatedMinutes = Math.max(1, Math.ceil(docHeight / pxPerMinute));
+
+        readingTimeEl.textContent = `${estimatedMinutes} Minute${estimatedMinutes > 1 ? 'n' : ''}`;
+    });
+</script>
+
+{% comment %}
+{
+"type": "content-hub-author",
+"name": "Author box",
+"settings": [
+{
+"type": "image_picker",
+"id": "image",
+"label": "Image"
+},
+{
+"type": "text",
+"id": "title",
+"label": "Title",
+"default": "Title"
+},
+{
+"type": "url",
+"id": "link",
+"label": "Link"
+},
+{
+"type": "richtext",
+"id": "content",
+"label": "Content",
+"default": "<p>Add a custom description about the author.</p>"
+},
+{
+"type": "checkbox",
+"id": "show_reading_time",
+"label": "Show reading estimate",
+"default": true
+},
+{
+"type": "text",
+"id": "label_reading_time",
+"label": "Label reading time"
+},
+{
+"type": "checkbox",
+"id": "show_published",
+"label": "Show blog",
+"default": true
+},
+{
+"type": "text",
+"id": "label_published",
+"label": "Label Published"
+}
+]
+},
+{% endcomment %}
