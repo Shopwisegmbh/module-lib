@@ -1,3 +1,7 @@
+{% comment %}  
+      Add {% render 'judgeme-widget' %} in theme.liquid
+{% endcomment %}
+
 {{ 'component-jdgme-widget.css' | asset_url | stylesheet_tag }}
 
 <script defer src="{{ 'jdgme-widget-component.js' | asset_url }}"></script>
@@ -41,59 +45,59 @@
 {%- endif -%}
 
 {%  comment %}  
-    JSON for settings_schema.json file 
+      JSON for settings_schema.json file 
 
-     {
-      "name": "JudgeMe Widget",
-      "settings": [
-         {
-            "type": "header",
-            "content": "Show a Judgeme Widget"
-        },
-        {
-          
-          "type": "checkbox",
-          "id": "show_widget",
-          "label": "Widget anzeigen",
-          "default": true
-        },
-        {
-          "type": "url",
-          "id": "link",
-          "label": "Page link"
-        },
-        {
-          "type": "image_picker",
-          "id": "widget_image",
-          "label": "Widget Logo"
-        },
-        {
-          "type": "range",
-          "id": "rating",
-          "label": "Sternebewertung",
-          "min": 1,
-          "max": 5,
-          "step": 0.1,
-          "default": 5
-        },
-        {
-          "type": "color",
-          "id": "star_color",
-          "label": "Rating color",
-          "default": "#000000"
-        },
-        {
-          "type": "text",
-          "id": "rating_number",
-          "label": "Bewertungszahl (z. B. 4.9)",
-          "default": "4.9"
-        },
-        {
-          "type": "text",
-          "id": "rating_text",
-          "label": "Bewertungstext",
-          "default": "Exzellent"
-        }
-      ]
-    }
+       {
+        "name": "JudgeMe Widget",
+        "settings": [
+           {
+              "type": "header",
+              "content": "Show a Judgeme Widget"
+          },
+          {
+            
+            "type": "checkbox",
+            "id": "show_widget",
+            "label": "Widget anzeigen",
+            "default": true
+          },
+          {
+            "type": "url",
+            "id": "link",
+            "label": "Page link"
+          },
+          {
+            "type": "image_picker",
+            "id": "widget_image",
+            "label": "Widget Logo"
+          },
+          {
+            "type": "range",
+            "id": "rating",
+            "label": "Sternebewertung",
+            "min": 1,
+            "max": 5,
+            "step": 0.1,
+            "default": 5
+          },
+          {
+            "type": "color",
+            "id": "star_color",
+            "label": "Rating color",
+            "default": "#000000"
+          },
+          {
+            "type": "text",
+            "id": "rating_number",
+            "label": "Bewertungszahl (z. B. 4.9)",
+            "default": "4.9"
+          },
+          {
+            "type": "text",
+            "id": "rating_text",
+            "label": "Bewertungstext",
+            "default": "Exzellent"
+          }
+        ]
+      }
 {% endcomment %}
