@@ -1,0 +1,99 @@
+{{ 'component-jdgme-widget.css' | asset_url | stylesheet_tag }}
+
+<script defer src="{{ 'jdgme-widget-component.js' | asset_url }}"></script>
+
+<style>
+  #floatingWidget {
+    z-index: 9999 !important;
+  }
+</style>
+
+{%- if settings.show_widget -%}
+  <div id="floatingWidget" class="jdgeme-widget">
+    {%- if settings.link != blank -%}<a class="jdgeme-widget" href="{{ settings.link }}">{%- endif -%}
+    <img
+      class="jdgm-widget__logo"
+      src="{{ settings.widget_image | img_url: "master" }}"
+      loading="lazy"
+      height="20"
+      width="20"
+      alt="{{ settings.widget_image.alt }}">
+    <div class="jdgm-widget__stars">
+      {% assign stars = settings.rating %}
+
+      {% for i in (0..5) %}
+        {% if i == stars %}
+          {% break %}
+        {% else %}
+          {%- render 'star-icon'
+            , color: settings.star_color -%}
+        {% endif %}
+      {% endfor %}
+    </div>
+    {%- if settings.rating_number != blank -%}
+      <span class="jdgm-widget__rating">{{- settings.rating_number -}}</span>
+    {%- endif -%}
+    {%- if settings.rating_text -%}
+      <span class="jdgm-widget__rating-text">{{- settings.rating_text -}}</span>
+    {%- endif -%}
+    {%- if settings.link != blank -%}</a>{%- endif -%}
+  </div>
+{%- endif -%}
+
+{%  comment %}  
+    JSON for settings_schema.json file 
+
+     {
+      "name": "JudgeMe Widget",
+      "settings": [
+         {
+            "type": "header",
+            "content": "Show a Judgeme Widget"
+        },
+        {
+          
+          "type": "checkbox",
+          "id": "show_widget",
+          "label": "Widget anzeigen",
+          "default": true
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Page link"
+        },
+        {
+          "type": "image_picker",
+          "id": "widget_image",
+          "label": "Widget Logo"
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Sternebewertung",
+          "min": 1,
+          "max": 5,
+          "step": 0.1,
+          "default": 5
+        },
+        {
+          "type": "color",
+          "id": "star_color",
+          "label": "Rating color",
+          "default": "#000000"
+        },
+        {
+          "type": "text",
+          "id": "rating_number",
+          "label": "Bewertungszahl (z. B. 4.9)",
+          "default": "4.9"
+        },
+        {
+          "type": "text",
+          "id": "rating_text",
+          "label": "Bewertungstext",
+          "default": "Exzellent"
+        }
+      ]
+    }
+{% endcomment %}
