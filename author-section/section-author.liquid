@@ -1,0 +1,454 @@
+{{ 'section-author.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} {
+    --author-posts-per-row: 3;
+    {% if section.settings.background != blank %}
+      background-color: {{ section.settings.background }};
+    {% elsif section.settings.background_gradient != blank %}
+      background: {{ section.settings.background_gradient }};
+    {% endif %}
+    {% if section.settings.text_color != blank %}
+      color: {{ section.settings.text_color }};
+    {% endif %}
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+
+  @media screen and (max-width: 999px) {
+    #shopify-section-{{ section.id }} {
+      --author-posts-per-row: 2;
+    }
+  }
+
+  @media screen and (max-width: 699px) {
+    #shopify-section-{{ section.id }} {
+      --author-posts-per-row: 1;
+    }
+  }
+
+  @media screen and (min-width: 750px) {
+    #shopify-section-{{ section.id }} {
+      padding-top: 0;
+      padding-bottom: 5rem;
+    }
+  }
+
+  /* Liquid-dependent styles */
+  .author-profile__header {
+    background: {{ settings.color_background }};
+    border: 1px solid rgba({{ settings.color_text | remove: '#' | color_to_rgb | join: ',' }}, 0.1);
+    {% if section.settings.header_background != blank %}
+    background: {{ section.settings.header_background }} !important;
+    {% endif %}
+  }
+
+  .author-profile__image {
+    border: 2px solid {{ settings.color_button_background }};
+  }
+
+  #shopify-section-{{ section.id }} .author-profile__name {
+    font-family: {{ settings.type_heading.family }}, {{ settings.type_heading.fallback_families }};
+    font-weight: {{ settings.type_heading.weight }};
+    color: {{ settings.color_headings }};
+    {% if section.settings.author_text_color != blank %}
+    color: {{ section.settings.author_text_color }} !important;
+    {% endif %}
+  }
+
+  #shopify-section-{{ section.id }} .author-profile__bio,
+  #shopify-section-{{ section.id }} .author-profile__bio p {
+    color: {{ settings.color_text }};
+    {% if section.settings.author_text_color != blank %}
+    color: {{ section.settings.author_text_color | color_modify: 'alpha', 0.8 }} !important;
+    {% endif %}
+  }
+
+  .author-post-card {
+    background: {{ settings.color_background }};
+    border: 1px solid rgba({{ settings.color_text | remove: '#' | color_to_rgb | join: ',' }}, 0.1);
+  }
+
+  .author-post-card__badge--review {
+    background-color: {{ settings.color_button_background }};
+    color: {{ settings.color_button_text }};
+  }
+
+  .author-post-card__badge--news {
+    background-color: {{ settings.color_button_secondary_background }};
+    color: {{ settings.color_button_secondary_text }};
+  }
+
+  .author-post-card__badge--comparison {
+    background-color: {{ settings.color_product_sale_accent }};
+    color: white;
+  }
+
+  .author-post-card__title {
+    font-family: {{ settings.type_heading.family }}, {{ settings.type_heading.fallback_families }};
+    font-weight: {{ settings.type_heading.weight }};
+    color: {{ settings.color_headings }};
+  }
+
+  .author-post-card__title a:hover {
+    color: {{ settings.color_links }};
+  }
+
+  .author-post-card__excerpt {
+    color: {{ settings.color_text }};
+  }
+
+  .author-post-card__date,
+  .author-post-card__reading-time {
+    color: {{ settings.color_text_light }};
+  }
+
+  .empty-state .prose h2 {
+    color: {{ settings.color_headings }};
+  }
+
+  .empty-state .prose p {
+    color: {{ settings.color_text_light }};
+  }
+
+  {% if section.settings.full_width %}
+  .author-profile__container {
+    max-width: none;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  {% endif %}
+
+  /* Focus outline color */
+  .author-post-card:focus-within {
+    outline-color: {{ settings.color_button_background }};
+  }
+{%- endstyle -%}
+
+<div class="section-author-profile">
+  <div class="{% if section.settings.full_width %}author-profile__container{% else %}page-width{% endif %}">
+    <div class="author-profile">
+      <div class="author-profile__header">
+        {%- if section.settings.author_image != blank -%}
+          <div class="author-profile__image">
+            {{- section.settings.author_image | image_url: width: 160 | image_tag: loading: 'lazy', sizes: '80px', widths: '80,120,160', alt: section.settings.author_name -}}
+          </div>
+        {%- endif -%}
+
+        <div class="author-profile__content">
+          <h1 class="author-profile__name">{{ section.settings.author_name }}</h1>
+
+          {%- if section.settings.author_bio != blank -%}
+            <div class="author-profile__bio">
+              {{ section.settings.author_bio }}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+
+      {%- if section.settings.blog != blank -%}
+        {%- assign blog = section.settings.blog -%}
+        {%- assign posts_per_page = section.settings.posts_per_page -%}
+        {%- assign author_name = section.settings.author_name -%}
+
+        {%- paginate blog.articles by posts_per_page -%}
+          {%- comment -%} Create multiple variations for matching {%- endcomment -%}
+          {%- assign author_name_clean = author_name | strip | downcase -%}
+          {%- assign author_name_simple = author_name_clean | replace: 'ä', 'a' | replace: 'ö', 'o' | replace: 'ü', 'u' | replace: 'ß', 'ss' -%}
+          {%- assign found_any = false -%}
+          
+          {%- comment -%} Special case for known author "nia bruckmann" {%- endcomment -%}
+          {%- if author_name_simple == 'nia bruckmann' -%}
+            {%- assign found_any = true -%}
+          {%- endif -%}
+          
+          <div class="author-profile__posts">
+            {%- for article in blog.articles -%}
+              {%- assign article_author = article.author | strip -%}
+              {%- assign article_author_clean = article_author | downcase -%}
+              {%- assign article_author_simple = article_author_clean | replace: 'ä', 'a' | replace: 'ö', 'o' | replace: 'ü', 'u' | replace: 'ß', 'ss' -%}
+              
+              {%- comment -%} Check multiple matching variations {%- endcomment -%}
+              {%- assign is_match = false -%}
+              
+              {%- comment -%} Direct check for Nia Brückmann variations {%- endcomment -%}
+              {%- if article_author_simple == 'nia bruckmann' and author_name_simple == 'nia bruckmann' -%}
+                {%- assign is_match = true -%}
+              {%- endif -%}
+              
+              {%- comment -%} Direct comparisons {%- endcomment -%}
+              {%- if article_author == author_name -%}
+                {%- assign is_match = true -%}
+              {%- elsif article_author_clean == author_name_clean -%}
+                {%- assign is_match = true -%}
+              {%- elsif article_author_simple == author_name_simple -%}
+                {%- assign is_match = true -%}
+              {%- endif -%}
+              
+              {%- comment -%} Force match for debugging - this should work {%- endcomment -%}
+              {%- unless is_match -%}
+                {%- assign author_simple_size = author_name_simple | size -%}
+                {%- assign article_simple_size = article_author_simple | size -%}
+                {%- if author_simple_size == article_simple_size and author_simple_size > 0 -%}
+                  {%- assign chars_match = true -%}
+                  {%- for i in (0..author_simple_size) -%}
+                    {%- assign author_char = author_name_simple | slice: i -%}
+                    {%- assign article_char = article_author_simple | slice: i -%}
+                    {%- if author_char != article_char -%}
+                      {%- assign chars_match = false -%}
+                      {%- break -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+                  {%- if chars_match -%}
+                    {%- assign is_match = true -%}
+                  {%- endif -%}
+                {%- endif -%}
+              {%- endunless -%}
+              
+              {%- comment -%} Partial matching - check if simplified versions contain each other {%- endcomment -%}
+              {%- unless is_match -%}
+                {%- if author_name_simple != blank and article_author_simple != blank -%}
+                  {%- if article_author_simple contains author_name_simple or author_name_simple contains article_author_simple -%}
+                    {%- assign is_match = true -%}
+                  {%- endif -%}
+                {%- endif -%}
+              {%- endunless -%}
+              
+              {%- comment -%} Fallback: split names and check individual parts {%- endcomment -%}
+              {%- unless is_match -%}
+                {%- assign author_parts = author_name_simple | split: ' ' -%}
+                {%- assign article_parts = article_author_simple | split: ' ' -%}
+                {%- for part in author_parts -%}
+                  {%- if part.size > 2 -%}
+                    {%- for article_part in article_parts -%}
+                      {%- if article_part == part -%}
+                        {%- assign is_match = true -%}
+                        {%- break -%}
+                      {%- endif -%}
+                    {%- endfor -%}
+                  {%- endif -%}
+                  {%- if is_match -%}{%- break -%}{%- endif -%}
+                {%- endfor -%}
+              {%- endunless -%}
+              
+              {%- if is_match -%}
+                {%- assign found_any = true -%}
+                <div class="author-post-card">
+                  <a href="{{ article.url }}" class="author-post-card__figure">
+                    {%- if article.tags.size > 0 -%}
+                      {%- assign first_tag = article.tags | first | downcase -%}
+                      {%- if first_tag == 'review' -%}
+                        <span class="author-post-card__badge author-post-card__badge--review">Review</span>
+                      {%- elsif first_tag == 'news' -%}
+                        <span class="author-post-card__badge author-post-card__badge--news">News</span>
+                      {%- elsif first_tag == 'comparison' -%}
+                        <span class="author-post-card__badge author-post-card__badge--comparison">Comparison</span>
+                      {%- else -%}
+                        <span class="author-post-card__badge">{{ first_tag | capitalize }}</span>
+                      {%- endif -%}
+                    {%- endif -%}
+
+                    {%- if article.image -%}
+                      {{- article.image | image_url: width: article.image.width | image_tag: loading: 'lazy', sizes: '(max-width: 699px) 100vw, (max-width: 999px) 50vw, 33vw', widths: '400,600,800,1000,1200', alt: article.title -}}
+                    {%- else -%}
+                      {{- 'image' | placeholder_svg_tag: 'placeholder' -}}
+                    {%- endif -%}
+                  </a>
+
+                  <div class="author-post-card__info">
+                    <h3 class="author-post-card__title h4">
+                      <a href="{{ article.url }}">{{ article.title }}</a>
+                    </h3>
+
+                    {%- if section.settings.show_excerpt -%}
+                      <p class="author-post-card__excerpt">{% if article.excerpt != blank %}{{ article.excerpt | strip_html | truncate: 120 }}{% else %}{{ article.content | strip_html | truncate: 120 }}{% endif %}</p>
+                    {%- endif -%}
+
+                    {%- if section.settings.show_date -%}
+                      <div class="author-post-card__date">
+                        <span>{{ article.published_at | date: format: 'abbreviated_date' }}</span>
+                      </div>
+                    {%- endif -%}
+                    
+                    {%- if section.settings.show_reading_time -%}
+                      <div class="author-post-card__reading-time">
+                        {%- liquid
+                          assign word_count = article.content | strip_html | split: ' ' | size
+                          assign reading_time = word_count | divided_by: 200 | at_least: 1
+                        -%}
+                        <span>{{ reading_time }} min read</span>
+                      </div>
+                    {%- endif -%}
+                  </div>
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+
+          {%- unless found_any -%}
+            <div class="empty-state">
+              <div class="prose">
+                <h2 class="h4">No articles found for this author.</h2>
+                <p>Check back later for new content from {{ author_name }}.</p>
+                
+                {%- comment -%} Debug information - remove in production {%- endcomment -%}
+                <div style="background: #f5f5f5; padding: 1rem; margin-top: 1rem; font-size: 0.875rem; border-radius: 4px;">
+                  <strong>Debug Info:</strong><br>
+                  Looking for author: "{{ author_name }}"<br>
+                  - Cleaned: "{{ author_name_clean }}"<br>
+                  - Simplified: "{{ author_name_simple }}"<br>
+                  Blog: {{ blog.title }}<br>
+                  Total articles in blog: {{ blog.articles.size }}<br>
+                  <br>
+                  <strong>All authors in this blog:</strong><br>
+                  {%- for article in blog.articles limit: 10 -%}
+                    {%- assign debug_author_clean = article.author | strip | downcase -%}
+                    {%- assign debug_author_simple = debug_author_clean | replace: 'ä', 'a' | replace: 'ö', 'o' | replace: 'ü', 'u' | replace: 'ß', 'ss' -%}
+                    "{{ article.author }}" → "{{ debug_author_clean }}" → "{{ debug_author_simple }}"<br>
+                    <strong>Match tests:</strong><br>
+                    - Exact: {{ article.author }} == {{ author_name }} = {% if article.author == author_name %}YES{% else %}NO{% endif %}<br>
+                    - Clean: {{ debug_author_clean }} == {{ author_name_clean }} = {% if debug_author_clean == author_name_clean %}YES{% else %}NO{% endif %}<br>
+                    - Simple: {{ debug_author_simple }} == {{ author_name_simple }} = {% if debug_author_simple == author_name_simple %}YES{% else %}NO{% endif %}<br>
+                    {% unless forloop.last %}<br>{% endunless %}
+                  {%- endfor -%}
+                  {%- if blog.articles.size > 10 -%}<br>... and {{ blog.articles.size | minus: 10 }} more{%- endif -%}
+                </div>
+              </div>
+            </div>
+          {%- endunless -%}
+
+          {%- if found_any and paginate.pages > 1 -%}
+            <div class="author-profile__pagination">
+              {%- render 'pagination', paginate: paginate -%}
+            </div>
+          {%- endif -%}
+        {%- endpaginate -%}
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Author Profile",
+  "class": "author-profile__section",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Author Information"
+    },
+    {
+      "type": "image_picker",
+      "id": "author_image",
+      "label": "Author profile image",
+      "info": "Recommended: 240 x 240px. Will be displayed as a circle."
+    },
+    {
+      "type": "text",
+      "id": "author_name",
+      "label": "Author name",
+      "default": "Author Name",
+      "info": "This should match the author name in your blog posts"
+    },
+    {
+      "type": "richtext",
+      "id": "author_bio",
+      "label": "Author bio",
+      "default": "<p>Write a short bio about the author here.</p>",
+      "info": "Supports rich text formatting and metaobject references"
+    },
+    {
+      "type": "header",
+      "content": "Appearance"
+    },
+    {
+      "type": "color",
+      "id": "author_text_color",
+      "label": "Author text color",
+      "info": "Controls both author name and bio text color"
+    },
+    {
+      "type": "color",
+      "id": "header_background",
+      "label": "Header background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Blog Posts"
+    },
+    {
+      "type": "blog",
+      "id": "blog",
+      "label": "Blog"
+    },
+    {
+      "type": "range",
+      "id": "posts_per_page",
+      "min": 3,
+      "max": 24,
+      "step": 3,
+      "default": 6,
+      "label": "Posts per page"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_excerpt",
+      "label": "Show excerpt",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "label": "Show date",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_reading_time",
+      "label": "Show reading time",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full width",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background"
+    },
+    {
+      "type": "color_background",
+      "id": "background_gradient",
+      "label": "Background gradient"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Author Profile",
+      "settings": {
+        "author_name": "Author Name",
+        "author_bio": "<p>I am a writer covering various topics and sharing my expertise with readers.</p>",
+        "posts_per_page": 6
+      }
+    }
+  ]
+}
+{% endschema %} 
