@@ -1,0 +1,33 @@
+progress-bar {
+    display: block
+}
+
+.progress-bar__container {
+    margin: 15px 0
+}
+
+.progress-bar__message {
+    font-weight: 500;
+    font-size: 1.2rem;
+    line-height: 1.2;
+    margin: 0 0 1rem
+}
+
+.progress-bar__track {
+    background: #f3f3f3;
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+    width: 100%;
+    position: relative
+}
+
+.progress-bar__fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    border-radius: 4px;
+    transition: width .5s ease;
+    background: var(--progress-bar-color)
+}

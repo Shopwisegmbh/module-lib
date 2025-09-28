@@ -1,0 +1,47 @@
+<style>
+  .progress-bar {
+    --progress-bar-color: {{ _bg }}
+  }
+</style>
+
+{% liquid
+  assign _limit_major = settings.progress_bar_value | default: 75
+  if _limit_major == 0
+    assign _limit_major = 75
+  endif
+  assign _limit_cents = _limit_major | times: 100
+  assign _msg = settings.progress_bar_message | default: 'Noch [[amount]] bis Gratisversand'
+  assign _bg = settings.progress_bar_bg_color | default: '#222'
+%}
+
+<progress-bar
+  class="progress-bar"
+  data-limit="{{ _limit_cents }}"
+  data-message="{{ _msg | escape }}"></progress-bar>
+
+{% comment %}
+  {
+  "name": "Progress Bar",
+  "settings": [
+  {
+  "type": "number",
+  "id": "progress_bar_value",
+  "label": "Threshold in major currency units",
+  "default": 75,
+  "min": 0
+  },
+  {
+  "type": "text",
+  "id": "progress_bar_message",
+  "label": "Message template",
+  "default": "Noch [[amount]] bis Gratisversand"
+  },
+  {
+  "type": "color",
+  "id": "progress_bar_bg_color",
+  "label": "Bar color",
+  "default": "#222222"
+  }
+  ]
+  }
+{% endcomment %}
