@@ -1,16 +1,16 @@
 progress-bar {
-    display: block
+    display: block;
 }
 
 .progress-bar__container {
-    margin: 15px 0
+    margin: 15px 0;
 }
 
 .progress-bar__message {
     font-weight: 500;
     font-size: 1.2rem;
     line-height: 1.2;
-    margin: 0 0 1rem
+    margin: 0 0 1rem;
 }
 
 .progress-bar__track {
@@ -19,7 +19,7 @@ progress-bar {
     border-radius: 4px;
     overflow: hidden;
     width: 100%;
-    position: relative
+    position: relative;
 }
 
 .progress-bar__fill {
@@ -29,5 +29,5 @@ progress-bar {
     height: 100%;
     border-radius: 4px;
     transition: width .5s ease;
-    background: var(--progress-bar-color)
+    background: var(--progress-bar-color);
 }
