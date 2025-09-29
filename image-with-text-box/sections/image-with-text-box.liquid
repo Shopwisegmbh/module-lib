@@ -1,0 +1,250 @@
+{{ 'component-icon-link-content.css' | asset_url | stylesheet_tag }}
+
+<div class="icon-link-content-section">
+  <div class="page-width">
+    <div class="icon-link-content-grid">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'icon_link_content' -%}
+            <div class="icon-link-content"{% if block.settings.background_color != blank %} style="background-color: {{ block.settings.background_color }};"{% endif %} {{ block.shopify_attributes }}>
+              <div class="icon-link-content__container">
+                {%- if block.settings.icon != blank -%}
+                  <div class="icon-link-content__icon">
+                    {%- assign icon_alt = block.settings.icon.alt | default: block.settings.heading | default: 'Content icon' -%}
+                    {{- block.settings.icon | image_url: width: 30 | image_tag: 
+                      loading: 'lazy',
+                      alt: icon_alt,
+                      class: 'icon-link-content__image',
+                      sizes: '30px',
+                      widths: '30, 60'
+                    -}}
+                  </div>
+                {%- endif -%}
+                <div class="icon-link-content__content">
+                  {%- if block.settings.heading != blank -%}
+                    <div class="icon-link-content__heading h4">{{ block.settings.heading }}</div>
+                  {%- endif -%}
+                  {%- if block.settings.content != blank -%}
+                    <div class="icon-link-content__text rte">{{ block.settings.content }}</div>
+                  {%- endif -%}
+                  {%- if block.settings.link_text != blank and block.settings.link_url != blank -%}
+                    <div class="icon-link-content__link">
+                      <a href="{{ block.settings.link_url }}" class="link underlined-link">{{ block.settings.link_text }}</a>
+                    </div>
+                  {%- endif -%}
+                </div>
+              </div>
+            </div>
+          {%- when 'media_icon_link_content' -%}
+            <div class="media-icon-link-content"{% if block.settings.background_color != blank %} style="background-color: {{ block.settings.background_color }};"{% endif %} {{ block.shopify_attributes }}>
+              <div class="media-icon-link-content__container">
+                <div class="media-icon-link-content__left">
+                  {%- if block.settings.icon != blank -%}
+                    <div class="media-icon-link-content__icon">
+                      {%- assign icon_alt = block.settings.icon.alt | default: block.settings.heading | default: 'Content icon' -%}
+                      {{- block.settings.icon | image_url: width: 30 | image_tag: 
+                        loading: 'lazy',
+                        alt: icon_alt,
+                        class: 'media-icon-link-content__icon-image',
+                        sizes: '30px',
+                        widths: '30, 60'
+                      -}}
+                    </div>
+                  {%- endif -%}
+                  <div class="media-icon-link-content__content">
+                    {%- if block.settings.heading != blank -%}
+                      <div class="media-icon-link-content__heading h4">{{ block.settings.heading }}</div>
+                    {%- endif -%}
+                    {%- if block.settings.content != blank -%}
+                      <div class="media-icon-link-content__text rte">{{ block.settings.content }}</div>
+                    {%- endif -%}
+                    {%- if block.settings.link_text != blank and block.settings.link_url != blank -%}
+                      <div class="media-icon-link-content__link">
+                        <a href="{{ block.settings.link_url }}" class="link underlined-link">{{ block.settings.link_text }}</a>
+                      </div>
+                    {%- endif -%}
+                  </div>
+                </div>
+                {%- if block.settings.image != blank -%}
+                  <div class="media-icon-link-content__right">
+                    {%- assign image_alt = block.settings.image.alt | default: block.settings.heading | default: 'Content image' -%}
+                    {{- block.settings.image | image_url: width: 400 | image_tag: 
+                      loading: 'lazy',
+                      alt: image_alt,
+                      class: 'media-icon-link-content__right-image',
+                      sizes: '(min-width: 750px) 200px, 100vw',
+                      widths: '200, 400'
+                    -}}
+                  </div>
+                {%- endif -%}
+              </div>
+            </div>
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Icon Link Content",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "default": "Icon Link Content",
+      "label": "t:sections.multirow.settings.title.label"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "t:sections.all.heading_size.options__1.label"
+        },
+        {
+          "value": "h1",
+          "label": "t:sections.all.heading_size.options__2.label"
+        },
+        {
+          "value": "h0",
+          "label": "t:sections.all.heading_size.options__3.label"
+        }
+      ],
+      "default": "h1",
+      "label": "t:sections.all.heading_size.label"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "background-1"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "icon_link_content",
+      "name": "Icon Link Content",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Content Heading"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content",
+          "default": "<p>Add your content here.</p>"
+        },
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "Link Text",
+          "default": "Learn More"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Link URL"
+        },
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Background Color"
+        }
+      ]
+    },
+    {
+      "type": "media_icon_link_content",
+      "name": "Media Icon Link Content",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Media Content Heading"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content",
+          "default": "<p>Add your content here.</p>"
+        },
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "Link Text",
+          "default": "Learn More"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Link URL"
+        },
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Background Color"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Icon Link Content",
+      "blocks": [
+        {
+          "type": "icon_link_content"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
