@@ -1,0 +1,71 @@
+{% comment %}
+  Renders a media icon link content snippet for use in product pages or other sections
+
+  Accepts:
+  - block: {Object} Block object containing settings
+  - icon: {Object} Icon image object
+  - image: {Object} Main image object
+  - heading: {String} Heading text
+  - content: {String} Rich text content
+  - link_text: {String} Link text
+  - link_url: {String} Link URL
+  - background_color: {String} Background color
+  - class: {String} Additional CSS classes
+
+  Usage:
+  {% render 'media-icon-link-content', 
+    block: block,
+    icon: block.settings.icon,
+    image: block.settings.image,
+    heading: block.settings.heading,
+    content: block.settings.content,
+    link_text: block.settings.link_text,
+    link_url: block.settings.link_url,
+    background_color: block.settings.background_color,
+    class: 'custom-class'
+  %}
+{% endcomment %}
+
+<div class="media-icon-link-content {{ class }}"{% if background_color != blank %} style="background-color: {{ background_color }};"{% endif %}{% if block %} {{ block.shopify_attributes }}{% endif %}>
+  <div class="media-icon-link-content__container">
+    <div class="media-icon-link-content__left">
+      {%- if icon != blank -%}
+        <div class="media-icon-link-content__icon">
+          {%- assign icon_alt = icon.alt | default: heading | default: 'Content icon' -%}
+          {{- icon | image_url: width: 30 | image_tag: 
+            loading: 'lazy',
+            alt: icon_alt,
+            class: 'media-icon-link-content__icon-image',
+            sizes: '30px',
+            widths: '30, 60'
+          -}}
+        </div>
+      {%- endif -%}
+      <div class="media-icon-link-content__content">
+        {%- if heading != blank -%}
+          <div class="media-icon-link-content__heading h4">{{ heading }}</div>
+        {%- endif -%}
+        {%- if content != blank -%}
+          <div class="media-icon-link-content__text rte">{{ content }}</div>
+        {%- endif -%}
+        {%- if link_text != blank and link_url != blank -%}
+          <div class="media-icon-link-content__link">
+            <a href="{{ link_url }}" class="link underlined-link">{{ link_text }}</a>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+    {%- if image != blank -%}
+      <div class="media-icon-link-content__right">
+        {%- assign image_alt = image.alt | default: heading | default: 'Content image' -%}
+        {{- image | image_url: width: 400 | image_tag: 
+          loading: 'lazy',
+          alt: image_alt,
+          class: 'media-icon-link-content__right-image',
+          sizes: '(min-width: 750px) 200px, 100vw',
+          widths: '200, 400'
+        -}}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
