@@ -1,0 +1,156 @@
+{%- comment -%}
+  Volume Discount Component
+  
+  This is a reusable component that displays product variants as volume discount options.
+  
+  Parameters:
+  - product: The product object (required)
+  - current_variant: The currently selected variant (optional, defaults to product.selected_or_first_available_variant)
+  - block: The block object containing settings (optional)
+  - section: The section object (optional)
+  
+  Block Settings (if using as a section block):
+  - title: Section title
+  - radio_button_color: Default radio button color
+  - radio_button_selected_color: Selected radio button color
+  - option_bg_color: Default background color
+  - option_bg_selected_color: Selected background color
+  - option_bg_hover_color: Hover background color
+  - enable_selected_border: Enable border on selected option
+  - selected_border_thickness: Border thickness in pixels
+  - selected_border_color: Border color
+  - enable_border_top: Enable top border on wrapper
+  - enable_border_bottom: Enable bottom border on wrapper
+  - color_border: Border color for wrapper
+  - spacing_top: Top spacing in pixels
+  - spacing_bottom: Bottom spacing in pixels
+{%- endcomment -%}
+
+{%- liquid
+  assign variant_collection = product.variants
+  assign selected_variant = current_variant | default: product.selected_or_first_available_variant
+  
+  # Get settings from block or use defaults
+  if block
+    assign vd_title = block.settings.title | default: 'Select Quantity'
+    assign vd_radio_default = block.settings.radio_button_color | default: '#004f9f'
+    assign vd_radio_selected = block.settings.radio_button_selected_color | default: '#004f9f'
+    assign vd_bg_default = block.settings.option_bg_color | default: '#f9f9f7'
+    assign vd_bg_selected = block.settings.option_bg_selected_color | default: '#e2e1e7'
+    assign vd_bg_hover = block.settings.option_bg_hover_color | default: '#f0f0ee'
+    assign vd_enable_border = block.settings.enable_selected_border | default: false
+    assign vd_border_thickness = block.settings.selected_border_thickness | default: 2
+    assign vd_border_color = block.settings.selected_border_color | default: '#004f9f'
+    assign vd_wrapper_border_top = block.settings.enable_border_top | default: false
+    assign vd_wrapper_border_bottom = block.settings.enable_border_bottom | default: false
+    assign vd_wrapper_border_color = block.settings.color_border | default: '#e6e6e6'
+    assign vd_spacing_top = block.settings.spacing_top | default: 0
+    assign vd_spacing_bottom = block.settings.spacing_bottom | default: 15
+    assign vd_section_id = section.id
+  else
+    assign vd_title = title | default: 'Select Quantity'
+    assign vd_radio_default = radio_button_color | default: '#004f9f'
+    assign vd_radio_selected = radio_button_selected_color | default: '#004f9f'
+    assign vd_bg_default = option_bg_color | default: '#f9f9f7'
+    assign vd_bg_selected = option_bg_selected_color | default: '#e2e1e7'
+    assign vd_bg_hover = option_bg_hover_color | default: '#f0f0ee'
+    assign vd_enable_border = enable_selected_border | default: false
+    assign vd_border_thickness = selected_border_thickness | default: 2
+    assign vd_border_color = selected_border_color | default: '#004f9f'
+    assign vd_wrapper_border_top = enable_border_top | default: false
+    assign vd_wrapper_border_bottom = enable_border_bottom | default: false
+    assign vd_wrapper_border_color = wrapper_border_color | default: '#e6e6e6'
+    assign vd_spacing_top = spacing_top | default: 0
+    assign vd_spacing_bottom = spacing_bottom | default: 15
+    assign vd_section_id = 'standalone'
+  endif
+  
+  assign vd_container_id = 'volume-discount-' | append: vd_section_id
+-%}
+
+<div 
+  id="{{ vd_container_id }}" 
+  class="volume-discount-container volume-discount-wrapper{% if vd_wrapper_border_top %} has-border-top{% endif %}{% if vd_wrapper_border_bottom %} has-border-bottom{% endif %}"
+  style="
+    --color-border: {{ vd_wrapper_border_color }};
+    --radio-default-color: {{ vd_radio_default }};
+    --radio-selected-color: {{ vd_radio_selected }};
+    --option-bg-color: {{ vd_bg_default }};
+    --option-bg-selected-color: {{ vd_bg_selected }};
+    --option-bg-hover-color: {{ vd_bg_hover }};
+    --selected-border-thickness: {{ vd_border_thickness }}px;
+    --selected-border-color: {{ vd_border_color }};
+    margin-top: {{ vd_spacing_top }}px;
+    margin-bottom: {{ vd_spacing_bottom }}px;
+  "
+  data-volume-discount-auto-init
+  data-product-id="{{ product.id }}"
+  data-radio-default-color="{{ vd_radio_default }}"
+  data-radio-selected-color="{{ vd_radio_selected }}"
+  data-option-bg-color="{{ vd_bg_default }}"
+  data-option-bg-selected-color="{{ vd_bg_selected }}"
+  data-option-bg-hover-color="{{ vd_bg_hover }}"
+  data-enable-selected-border="{% if vd_enable_border %}true{% else %}false{% endif %}"
+  data-selected-border-thickness="{{ vd_border_thickness }}"
+  data-selected-border-color="{{ vd_border_color }}"
+>
+  <div class="volume-discount-options">
+    <h3 class="volume-discount-title">{{ vd_title }}</h3>
+    
+    <div class="volume-discount-variants">
+      {% for variant in variant_collection %}
+        {%- liquid
+          assign variant_price = variant.price | money
+          assign variant_title = variant.title
+          assign unit_price = ''
+          assign savings = ''
+          
+          # Extract unit price if available from metafields
+          if variant.metafields.volume_discount.unit_price
+            assign unit_price = variant.metafields.volume_discount.unit_price
+          endif
+          
+          # Determine savings based on compare_at_price
+          if variant.compare_at_price > variant.price
+            assign savings_percentage = variant.compare_at_price | minus: variant.price | times: 100 | divided_by: variant.compare_at_price | round
+            assign savings = savings_percentage | append: '%'
+          endif
+          
+          assign is_selected = false
+          if variant.id == selected_variant.id
+            assign is_selected = true
+          endif
+        -%}
+        
+        <div class="volume-discount-option{% if is_selected %} selected{% endif %}{% if vd_enable_border %} has-selected-border{% endif %}">
+          <label class="volume-discount-label" for="volume-option-{{ variant.id }}-{{ vd_section_id }}">
+            <div class="volume-option-radio">
+              <input 
+                type="radio" 
+                id="volume-option-{{ variant.id }}-{{ vd_section_id }}" 
+                name="volume-discount-{{ product.id }}" 
+                value="{{ variant.id }}" 
+                {% if is_selected %}checked{% endif %} 
+                data-variant-id="{{ variant.id }}"
+                data-variant-price="{{ variant_price }}"
+                class="volume-option-input"
+              >
+              <div class="volume-radio-button"></div>
+            </div>
+            <div class="volume-option-title">
+              {{ variant_title }}
+            </div>
+            <div class="volume-option-price-info">
+              <div class="volume-option-price">{{ variant_price }}</div>
+              {% if unit_price != blank or savings != blank %}
+                <div class="volume-option-unit-price">
+                  {{ unit_price }}{% if unit_price != blank and savings != blank %} - {% endif %}{% if savings != blank %}Save {{ savings }}{% endif %}
+                </div>
+              {% endif %}
+            </div>
+          </label>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,138 @@
+{
+  "type": "volume_discount",
+  "name": "Volume Discount",
+  "limit": 1,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section title",
+      "default": "Select Quantity",
+      "info": "The heading displayed above the volume discount options"
+    },
+    {
+      "type": "header",
+      "content": "Radio Button Colors"
+    },
+    {
+      "type": "color",
+      "id": "radio_button_color",
+      "label": "Default radio button color",
+      "default": "#004f9f",
+      "info": "Color of the radio button border when not selected"
+    },
+    {
+      "type": "color",
+      "id": "radio_button_selected_color",
+      "label": "Selected radio button color",
+      "default": "#004f9f",
+      "info": "Color of the radio button when selected"
+    },
+    {
+      "type": "header",
+      "content": "Option Background Colors"
+    },
+    {
+      "type": "color",
+      "id": "option_bg_color",
+      "label": "Default background color",
+      "default": "#f9f9f7",
+      "info": "Background color for unselected options"
+    },
+    {
+      "type": "color",
+      "id": "option_bg_selected_color",
+      "label": "Selected background color",
+      "default": "#e2e1e7",
+      "info": "Background color when an option is selected"
+    },
+    {
+      "type": "color",
+      "id": "option_bg_hover_color",
+      "label": "Hover background color",
+      "default": "#f0f0ee",
+      "info": "Background color when hovering over an option"
+    },
+    {
+      "type": "header",
+      "content": "Selected Option Border"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_selected_border",
+      "label": "Add border to selected option",
+      "default": false,
+      "info": "Show a border around the selected option"
+    },
+    {
+      "type": "range",
+      "id": "selected_border_thickness",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 2,
+      "label": "Border thickness (px)",
+      "info": "Only applies when border is enabled"
+    },
+    {
+      "type": "color",
+      "id": "selected_border_color",
+      "label": "Border color",
+      "default": "#004f9f",
+      "info": "Color of the border around selected option"
+    },
+    {
+      "type": "header",
+      "content": "Wrapper Styling"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_border_top",
+      "label": "Enable top border",
+      "default": false,
+      "info": "Add a border at the top of the volume discount section"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_border_bottom",
+      "label": "Enable bottom border",
+      "default": false,
+      "info": "Add a border at the bottom of the volume discount section"
+    },
+    {
+      "type": "color",
+      "id": "color_border",
+      "label": "Wrapper border color",
+      "default": "#e6e6e6",
+      "info": "Color for top/bottom borders"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "spacing_top",
+      "label": "Top spacing",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 0,
+      "info": "Space above the volume discount section"
+    },
+    {
+      "type": "range",
+      "id": "spacing_bottom",
+      "label": "Bottom spacing",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 15,
+      "info": "Space below the volume discount section"
+    }
+  ]
+}
+
+

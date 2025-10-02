@@ -1,0 +1,182 @@
+/**
+ * Volume Discount Component Styles
+ * Modular CSS for the Volume Discount feature
+ * Compatible with any Shopify theme
+ */
+
+/* CSS Variables for customization */
+.volume-discount-container {
+  --radio-default-color: #004f9f;
+  --radio-selected-color: #004f9f;
+  --option-bg-color: #f9f9f7;
+  --option-bg-selected-color: #e2e1e7;
+  --option-bg-hover-color: #f0f0ee;
+  --selected-border-thickness: 2px;
+  --selected-border-color: #004f9f;
+  --color-border: #e6e6e6;
+}
+
+/* Main wrapper */
+.volume-discount-wrapper {
+  margin: 20px 0;
+}
+
+.volume-discount-wrapper.has-border-top {
+  border-top: 1px solid var(--color-border);
+  padding-top: 15px;
+}
+
+.volume-discount-wrapper.has-border-bottom {
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 15px;
+}
+
+/* Title */
+.volume-discount-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #555;
+}
+
+/* Variants container */
+.volume-discount-variants {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Individual option */
+.volume-discount-option {
+  border-radius: 5px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  background-color: var(--option-bg-color);
+  border: 0px solid transparent;
+}
+
+.volume-discount-option.has-selected-border {
+  border-color: var(--selected-border-color);
+}
+
+.volume-discount-option.selected {
+  background-color: var(--option-bg-selected-color);
+}
+
+.volume-discount-option.selected.has-selected-border {
+  border-width: var(--selected-border-thickness);
+}
+
+.volume-discount-option:hover:not(.selected) {
+  background-color: var(--option-bg-hover-color);
+}
+
+/* Label */
+.volume-discount-label {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  cursor: pointer;
+  width: 100%;
+  margin: 0;
+}
+
+/* Radio button wrapper */
+.volume-option-radio {
+  position: relative;
+  margin-right: 15px;
+  flex-shrink: 0;
+}
+
+/* Hidden radio input */
+.volume-option-input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Custom radio button */
+.volume-radio-button {
+  height: 22px;
+  width: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--radio-default-color);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s ease;
+}
+
+.volume-option-input:checked ~ .volume-radio-button {
+  border-color: var(--radio-selected-color);
+}
+
+.volume-option-input:checked ~ .volume-radio-button::after {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: var(--radio-selected-color);
+}
+
+/* Option title */
+.volume-option-title {
+  flex-grow: 1;
+  font-weight: 500;
+  color: #000;
+}
+
+/* Price info container */
+.volume-option-price-info {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+
+/* Price */
+.volume-option-price {
+  font-weight: 600;
+  color: #000;
+}
+
+/* Unit price and savings */
+.volume-option-unit-price {
+  font-size: 12px;
+  color: #777;
+  margin-top: 4px;
+}
+
+.volume-option-unit-price.bestseller {
+  padding: 2px 8px;
+  background-color: #2b5526;
+  color: white;
+  border-radius: 3px;
+  font-size: 12px;
+}
+
+/* Responsive design */
+@media screen and (max-width: 749px) {
+  .volume-discount-label {
+    padding: 12px;
+  }
+  
+  .volume-discount-title {
+    font-size: 16px;
+  }
+  
+  .volume-option-title {
+    font-size: 14px;
+  }
+  
+  .volume-option-price {
+    font-size: 14px;
+  }
+}
+
+
