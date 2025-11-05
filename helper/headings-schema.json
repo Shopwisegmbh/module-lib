@@ -1,0 +1,21 @@
+  {
+      "type" : "select",
+      "id" : "heading_size",
+      "label" : "Heading Tag",
+      "default" : "h2",
+      "info" : "Choose a heading tag.",
+      "options" : [
+        {
+         "value" : "h1",
+         "label" : "h1"
+        },
+        {
+         "value" : "h2",
+         "label" : "h2"
+        },
+        {
+         "value" : "h3",
+         "label" : "h3"
+        }
+      ]
+    }
