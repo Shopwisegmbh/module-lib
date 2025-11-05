@@ -1,0 +1,118 @@
+{{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
+{{ 'crosssell-cart-component.css' | asset_url | stylesheet_tag }}
+
+<div class="swiper" id="crosssell-swiper">
+  <div class="swiper-wrapper">
+    {%- for product in settings.product_list -%}
+      <div class="swiper-slide" data-variant-id="{{ product.selected_or_first_available_variant.id }}">
+        <div class="crosssell-card">
+          <div class="crosssell-card__content">
+            <img
+              src="{{ product.featured_image | img_url: 'master' }}"
+              width="50"
+              height="50"
+              alt="{{ product.featured_image.alt | escape }}"
+              class="crosssell-thumb">
+            <div class="crosssell-info">
+              <p class="crosssell-title">{{ product.title | truncatewords: 2 }}</p>
+              <p class="crosssell-price">{{ product.price | money }}</p>
+            </div>
+          </div>
+          <product-form>
+            <form
+              method="post"
+              action="{{ routes.cart_add_url }}"
+              class="crosssell-form"
+              accept-charset="UTF-8">
+              <input
+                type="hidden"
+                name="id"
+                value="{{ product.selected_or_first_available_variant.id }}">
+              <button
+                type="submit"
+                class="crosssell-cta"
+                data-crosssell-atc>{{ 'product.general.add_to_cart_button' | t }}</button>
+            </form>
+          </product-form>
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+  <div class="swiper-button-prev"></div>
+  <div class="swiper-button-next"></div>
+</div>
+
+<script src="{{ 'swiper-bundle.min.js' | asset_url }}" defer></script>
+<script defer>
+  (function(){
+  var PENDING = null;
+
+  function getEl(){ return document.getElementById('crosssell-swiper'); }
+
+  function initSwiper(){
+    var el = getEl();
+    if (!el) return;
+    var needsRebuild = !window.crosssellSwiper || window.crosssellSwiper.el !== el;
+    if (needsRebuild && window.crosssellSwiper) {
+      try { window.crosssellSwiper.destroy(true, true); } catch(e){}
+      window.crosssellSwiper = null;
+    }
+    if (!window.crosssellSwiper) {
+      window.crosssellSwiper = new Swiper('#crosssell-swiper', {
+        loop: false,
+        slidesPerView: 1,
+        navigation: {
+          nextEl: '#crosssell-swiper .swiper-button-next',
+          prevEl: '#crosssell-swiper .swiper-button-prev'
+        },
+        observer: true,
+        observeParents: true
+      });
+    } else {
+      window.crosssellSwiper.update();
+    }
+  }
+
+  function removeSlideByVariant(variantId){
+    var el = getEl();
+    if (!el || !window.crosssellSwiper || !variantId) return;
+    var slide = el.querySelector('.swiper-slide[data-variant-id="'+ variantId +'"]');
+    if (!slide) return;
+    var idx = Array.prototype.indexOf.call(slide.parentNode.children, slide);
+    if (idx > -1) {
+      window.crosssellSwiper.removeSlide(idx);
+      window.crosssellSwiper.update();
+    }
+  }
+
+  document.addEventListener('click', function(e){
+    var btn = e.target.closest('[data-crosssell-atc]');
+    if (!btn) return;
+    var form = btn.closest('form');
+    var idEl = form && form.querySelector('[name="id"]');
+    PENDING = idEl ? String(idEl.value) : null;
+  });
+
+  document.addEventListener('product:added', function(){
+    if (PENDING) removeSlideByVariant(PENDING);
+    initSwiper();
+    PENDING = null;
+  });
+
+  document.addEventListener('cart:updated', function(){
+    if (PENDING) removeSlideByVariant(PENDING);
+    initSwiper();
+    PENDING = null;
+  });
+
+  document.addEventListener('shopify:section:load', initSwiper);
+  document.addEventListener('cart-drawer:open', initSwiper);
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSwiper);
+  } else {
+    initSwiper();
+  }
+  window.addEventListener('load', initSwiper);
+  })();
+</script>

@@ -1,0 +1,119 @@
+{% if block.settings.product_list != blank %}
+  <div class="comp-wrap" {{ block.shopify_attributes }}>
+    {% if block.settings.products_heading != blank %}
+      <h3 class="comp-heading">{{ block.settings.products_heading }}</h3>
+    {% endif %}
+
+    {% assign comp_count = 0 %}
+    {% for _p in block.settings.product_list %}
+      {% assign comp_count = comp_count | plus: 1 %}
+    {% endfor %}
+    {% if comp_count > 2 %}
+      {% assign show_dots = true %}
+    {% else %}
+      {% assign show_dots = false %}
+    {% endif %}
+
+    <div
+      class="comp-slider js-flickity"
+      data-flickity='{
+   
+  "cellAlign":"left",
+  "contain":true,
+  "groupCells":2,
+  "wrapAround":false,
+  "pageDots":{{ show_dots | json }},
+  "prevNextButtons":false,
+  "draggable":{{ show_dots | json }}
+    }'
+      data-page-dots="{{ show_dots }}">
+      {% for product_ref in block.settings.product_list %}
+        {% assign v0 = product_ref.selected_or_first_available_variant %}
+        <div class="comp-card" data-product-id="{{ product_ref.id }}">
+          <a
+            href="{{ product_ref.url }}"
+            class="comp-link"
+            tabindex="-1">
+            <div class="comp-media">
+              <img
+                src="{{ v0.featured_image | default: product_ref.featured_image | image_url: width: 600 }}"
+                alt="{{ product_ref.title | escape }}"
+                width="600"
+                height="600"
+                loading="lazy">
+            </div>
+          </a>
+
+          <div class="comp-body">
+            <h4 class="comp-title">{{ product_ref.title }}</h4>
+            <p class="comp-price" data-initial-price="{{ v0.price }}">
+              {% if product_ref.price_varies %}
+                {{ 'products.product.from_price_html' | t: price: product_ref.price | money }}
+              {% else %}
+                {{ v0.price | money }}{% endif %}
+            </p>
+
+            <form
+              class="comp-form"
+              method="post"
+              action="/cart/add">
+              <input
+                type="hidden"
+                name="id"
+                value="{{ v0.id }}"
+                class="js-variant-id">
+              {% unless product_ref.has_only_default_variant %}
+                <div class="comp-selects">
+                  {% for option in product_ref.options_with_values %}
+                    <select
+                      name="options[{{ option.name }}]"
+                      id="option-{{ option.name | handleize }}-{{ product_ref.id }}"
+                      data-index="{{ forloop.index0 }}"
+                      class="comp-select js-option-select"
+                      aria-label="{{ option.name }}">
+                      {% for value in option.values %}
+                        <option
+                          value="{{ value }}"
+                          {% if value == option.selected_value %}
+                          selected{% endif %}>{{ value }}</option>
+                      {% endfor %}
+                    </select>
+                  {% endfor %}
+                </div>
+              {% endunless %}
+
+              <button
+                type="submit"
+                class="comp-btn button button--primary button--full"
+                {% unless v0.available %}
+                disabled{% endunless %}>
+                {% if v0.available %}
+                  {{ block.settings.label | default: 'Add' }}
+                {% else %}
+                  {{ 'products.product.sold_out' | t }}{% endif %}
+              </button>
+            </form>
+          </div>
+
+          <script type="application/json" class="js-variants">
+                      [
+            {% for v in product_ref.variants %}
+              {
+                "id": {{ v.id }},
+                "title": {{ v.title | json }},
+                "options": {{ v.options | json }},
+                "price": {{ v.price }},
+                "available": {{ v.available | json }},
+                "public_title": {{ v.public_title | json }},
+                "featured_image_src": "{% if v.featured_image %}{{ v.featured_image | image_url: width: 600 }}{% else %}{{ product_ref.featured_image | image_url: width: 600 }}{% endif %}"
+              }{% unless forloop.last %},{% endunless %}
+            {% endfor %}
+                      ]
+          </script>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}
+
+<script src="{{ 'crosssell-pdp-component.js' | asset_url }}" defer></script>

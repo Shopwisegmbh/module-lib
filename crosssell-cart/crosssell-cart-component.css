@@ -1,0 +1,76 @@
+  #crosssell-swiper {
+    width: 100%;
+    margin: 1em 0;
+  }
+  #crosssell-swiper .swiper-slide {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .crosssell-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    padding: 0 15px;
+  }
+  .crosssell-card__content {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    flex: 1;
+    min-width: 0;
+  }
+  .crosssell-thumb {
+    width: 50px;
+    height: 50px;
+    max-width: none;
+    object-fit: cover;
+    border-radius: 8px;
+    flex: 0 0 auto;
+  }
+  .crosssell-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+    min-width: 0;
+  }
+  .crosssell-title {
+    font-size: 16px;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .crosssell-price {
+    font-size: 14px;
+    line-height: 1.2;
+    opacity: .8;
+  }
+  .crosssell-cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 16px;
+    border: 2px solid currentColor;
+    border-radius: 10px;
+    flex: 0 0 auto;
+  }
+  #crosssell-swiper .swiper-button-prev,
+  #crosssell-swiper .swiper-button-next {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .swiper-button-next:after,
+  .swiper-button-prev:after {
+    font-family: swiper-icons;
+    font-size: 14px;
+    line-height: 1;
+    color: #48080F;
+  }

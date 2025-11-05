@@ -1,0 +1,111 @@
+.comp-slider .flickity-viewport {
+    overflow: hidden;
+}
+
+.comp-slider {
+    margin: 0 -12px;
+}
+
+.comp-slider .flickity-viewport {
+    overflow: hidden !important;
+}
+
+.comp-card {
+    width: 50%;
+    padding: 0 12px;
+    box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+    .comp-card {
+        width: 50%;
+    }
+}
+
+.comp-wrap {
+    margin-block: var(--spacing-6, 2rem);
+}
+
+.comp-heading {
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    font-size: .95rem;
+    margin-bottom: 1rem;
+}
+
+.comp-slider .flickity-viewport {
+    overflow: visible;
+}
+
+.comp-card {
+    width: 50%;
+    min-width: 50%;
+    padding: 0 1rem;
+    box-sizing: border-box;
+}
+
+.comp-link {
+    display: block;
+}
+
+.comp-media {
+    aspect-ratio: 1/1;
+    display: grid;
+    place-items: center;
+    background: transparent;
+}
+
+.comp-media img {
+    max-width: 75%;
+    height: auto;
+    display: block;
+}
+
+.comp-body {
+    text-align: center;
+    padding: .5rem 0 1.25rem;
+}
+
+.comp-title {
+    font-size: 16px;
+    line-height: 1.35;
+    margin: .25rem 0 .5rem;
+}
+
+.comp-price {
+    margin: .25rem 0 1rem;
+    font-size: 1rem;
+}
+
+.comp-selects {
+    margin-bottom: .75rem;
+}
+
+.comp-select {
+    width: 100%;
+    padding: .7rem 1rem;
+    border: 1px solid rgba(255, 255, 255, .15);
+    background: #fff;
+    color: #111;
+    appearance: none;
+}
+
+.comp-btn[disabled] {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+    .comp-card {
+        width: 50%;
+        min-width: 50%;
+    }
+
+    .comp-media img {
+        max-width: 70%;
+    }
+}
+
+.comp-slider[data-page-dots="false"] .flickity-page-dots {
+    display: none
+}
