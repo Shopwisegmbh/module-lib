@@ -65,7 +65,7 @@ To customize for your theme:
 - **Colors**: Background, text, and accent colors
 - **Spacing**: Top and bottom padding controls
 
-## Browser Support
+## Browser Support 
 
 - Modern browsers (Chrome, Firefox, Safari, Edge)
 - CSS Grid support required
