@@ -2,6 +2,13 @@
 
 A portable, theme-agnostic Shopify section for displaying quotes with images. Designed to work seamlessly across different themes including Dawn.
 
+##Metafields
+- Subheading(Single Line Text)
+- Heading(Single Line Text)
+- Quote(Rich Text Metafield)
+- Signature(Image)
+- Author(Image)
+
 ## Features
 
 - **Self-contained**: All styles and SVG icons included inline
