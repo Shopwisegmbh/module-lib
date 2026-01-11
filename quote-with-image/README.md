@@ -2,7 +2,7 @@
 
 A portable, theme-agnostic Shopify section for displaying quotes with images. Designed to work seamlessly across different themes including Dawn.
 
-##Metafields
+## Metafields
 - Subheading(Single Line Text)
 - Heading(Single Line Text)
 - Quote(Rich Text Metafield)
