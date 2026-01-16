@@ -1,70 +1,82 @@
-{{ 'quote-with-image.css' | asset_url | stylesheet_tag }}
+{{ 'quote-with-image.css' | asset_url | stylesheet_tag }} 
 
-<div
-  class="quote-image-section"
-  style="
-    --quote-section-color: {{ section.settings.color }};
-    --quote-section-accent: {{ section.settings.accent }};
-    --quote-section-bg: {{ section.settings.bg }};
-    padding-top: {{ section.settings.padding_top }}rem;
-    padding-bottom: {{ section.settings.padding_bottom }}rem;
-  "
->
-  <div class="quote-image-section__container">
-    <div class="quote-image-section__card">
-      <div class="quote-image-section__grid {% if section.settings.image_position == 'left' %}quote-image-section__grid--reverse{% endif %}">
-        <div class="quote-image-section__content">
-          {% if section.settings.eyebrow != blank %}
-            <div class="quote-image-section__eyebrow">{{ section.settings.eyebrow }}</div>
-          {% endif %}
+{%- if section.settings.content != blank -%}
+  <div
+    class="section__container page-width page-width--fixed"
+    style="
+      --quote-section-color: {{ section.settings.color }};
+      --quote-section-accent: {{ section.settings.accent }};
+      --quote-section-bg: {{ section.settings.bg }};
+      padding-top: {{ section.settings.padding_top }}rem;
+      padding-bottom: {{ section.settings.padding_bottom }}rem;
+    "
+  >
+    <div class="quote-image-section__container">
+      <div class="quote-image-section__card">
+        <div class="quote-image-section__grid {% if section.settings.image_position == 'left' %}quote-image-section__grid--reverse{% endif %}">
+          <div class="quote-image-section__content">
+            {% if section.settings.subheading != blank %}
+              <p class="h6">{{ section.settings.subheading }}</p>
+            {% endif %}
 
-          {% if section.settings.heading != blank %}
-            <h2 class="quote-image-section__heading">{{ section.settings.heading }}</h2>
-          {% endif %}
+            {% if section.settings.heading != blank %}
+              <h2 class="quote-image-section__h2 h2">{{ section.settings.heading }}</h2>
+            {% endif %}
 
-          {% if section.settings.body != blank %}
-            <div class="quote-image-section__body rte">{{ section.settings.body }}</div>
-          {% endif %}
+            {% if section.settings.content != blank %}
+              <div class="quote-image-section__body rte prose">
+                {{ section.settings.content }}
 
-          {% if section.settings.signature != blank %}
-            <div class="quote-image-section__signature">
+                {% if section.settings.show_quotes %}
+                <div class="quote-image-section__quotes" aria-hidden="true">
+                  <svg
+                    version="1.1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 298.667 298.667"
+                    xml:space="preserve"
+                  >
+                    <g>
+                      <polygon points="0,170.667 64,170.667 21.333,256 85.333,256 128,170.667 128,42.667 0,42.667"/>
+                      <polygon points="170.667,42.667 170.667,170.667 234.667,170.667 192,256 256,256 298.667,170.667 298.667,42.667"/>
+                    </g>
+                  </svg>
+                </div>
+              {% endif %}
+              </div>
+            {% endif %}
+
+            {% if section.settings.signature != blank %}
+              <div class="quote-image-section__signature">
+                {{
+                  section.settings.signature
+                  | image_url: width: 400
+                  | image_tag:
+                    loading: 'lazy',
+                    class: 'quote-image-section__signature-img',
+                    alt: section.settings.signature_alt
+                }}
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="quote-image-section__media">
+            {% if section.settings.image != blank %}
               {{
-                section.settings.signature
-                | image_url: width: 400
-                | image_tag: loading: 'lazy', class: 'quote-image-section__signature-img', alt: section.settings.signature_alt
+                section.settings.image
+                | image_url: width: 1200
+                | image_tag:
+                  loading: 'lazy',
+                  sizes: '(min-width: 1200px) 50vw, 100vw',
+                  class: 'quote-image-section__img',
+                  alt: section.settings.image_alt
               }}
-            </div>
-          {% endif %}
-
-          {% if section.settings.show_quotes %}
-            <div class="quote-image-section__quotes" aria-hidden="true">
-              <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 298.667 298.667" xml:space="preserve">
-                <g>
-                  <polygon points="0,170.667 64,170.667 21.333,256 85.333,256 128,170.667 128,42.667 0,42.667"/>
-                  <polygon points="170.667,42.667 170.667,170.667 234.667,170.667 192,256 256,256 298.667,170.667 298.667,42.667"/>
-                </g>
-              </svg>
-            </div>
-          {% endif %}
-        </div>
-
-        <div class="quote-image-section__media">
-          {% if section.settings.image != blank %}
-            {{
-              section.settings.image
-              | image_url: width: 1200
-              | image_tag:
-                loading: 'lazy',
-                sizes: '(min-width: 1200px) 50vw, 100vw',
-                class: 'quote-image-section__img',
-                alt: section.settings.image_alt
-            }}
-          {% endif %}
+            {% endif %}
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+{%- endif -%}
 
 {% schema %}
 {
@@ -74,9 +86,9 @@
   "settings": [
     {
       "type": "text",
-      "id": "eyebrow",
-      "label": "Eyebrow Text",
-      "default": "Subtitle"
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Subheading"
     },
     {
       "type": "text",
@@ -86,14 +98,14 @@
     },
     {
       "type": "richtext",
-      "id": "body",
+      "id": "content",
       "label": "Quote Text",
       "default": "<p>Add your quote text here</p>"
     },
     {
       "type": "image_picker",
       "id": "signature",
-      "label": "Signature Image"
+      "label": "Signature"
     },
     {
       "type": "text",
@@ -154,7 +166,7 @@
       "type": "color",
       "id": "accent",
       "label": "Accent Color",
-      "default": "#B1006E"
+      "default": "#000000"
     },
     {
       "type": "header",
