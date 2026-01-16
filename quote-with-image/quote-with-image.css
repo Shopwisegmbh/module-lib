@@ -3,15 +3,18 @@
   width: 100%;
 }
 
+.quote-image-section__h2 {
+    margin-block-start: 1.25rem;
+
+}
+
 .quote-image-section__container {
   max-width: var(--page-width, 1320px);
   margin: 0 auto;
-  padding: 0 var(--gutter-md, 20px);
 }
 
 .quote-image-section__card {
   background: var(--quote-section-bg, #ffffff);
-  border: 1px solid rgba(var(--border-color, 0, 0, 0), 0.1);
   border-radius: 0;
   overflow: hidden;
 }
@@ -33,7 +36,7 @@
 
 .quote-image-section__content {
   position: relative;
-  padding: 3.5rem 4.6rem;
+  padding: 3.5rem 4.6rem 3.5rem 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -75,26 +78,26 @@
 }
 
 .quote-image-section__signature-img {
-  max-width: 100px;
+  max-width: 220px;
   height: auto;
   display: block;
 }
 
 .quote-image-section__quotes {
-  position: absolute;
-  left: 2rem;
-  top: 10rem;
-  width: 12rem;
-  height: 12rem;
-  opacity: 0.15;
-  z-index: 0;
-  pointer-events: none;
+    position: absolute;
+    left: 25em;
+    top: -5em;
+    width: 6em;
+    height: 6em;
+    opacity: .15;
+    z-index: 0;
+    pointer-events: none;
 }
 
 .quote-image-section__quotes svg {
   width: 100%;
   height: 100%;
-  fill: currentColor;
+  fill: #CDB882;
   color: inherit;
 }
 
@@ -117,6 +120,10 @@
   object-fit: cover;
 }
 
+.quote-image-section__body.rte.prose {
+    margin-block-start: 1.25rem;
+}
+
 @media (max-width: 990px) {
   .quote-image-section__grid {
     grid-template-columns: 1fr;
@@ -127,7 +134,7 @@
   }
 
   .quote-image-section__content {
-    padding: 1.25rem 1rem;
+    padding: 1.25rem 1rem 1.25rem 0;
   }
 
   .quote-image-section__quotes {
@@ -139,17 +146,15 @@
   }
 
   .quote-image-section__signature-img {
-    width: 40%;
+    width: 60%;
     margin-inline: auto;
   }
 
   .quote-image-section__media {
     min-height: 300px;
   }
-}
 
-@media (max-width: 749px) {
-  .quote-image-section__container {
-    padding: 0 var(--gutter-sm, 15px);
-  }
+  .quote-image-section__signature {
+    margin-top: 0.25rem;
+}
 }
